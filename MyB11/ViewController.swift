@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import SideMenu
 
 class ViewController: UIViewController {
+    
+    let transition = SlideTransition()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,6 +19,28 @@ class ViewController: UIViewController {
         
     }
 
+    @IBAction func didTabMenu(_ sender: UIButton) {
+        print("asdf")
+        
+        
+        guard let menuViewController = storyboard?.instantiateViewController(identifier: "MenuViewController") else { return }
+        menuViewController.modalPresentationStyle = .overCurrentContext
+        menuViewController.transitioningDelegate = self
+        present(menuViewController, animated: true)
+    }
+    
+}
 
+extension ViewController: UIViewControllerTransitioningDelegate {
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transition.isPresenting = true
+        return transition
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transition.isPresenting = false
+        return transition
+    }
 }
 
