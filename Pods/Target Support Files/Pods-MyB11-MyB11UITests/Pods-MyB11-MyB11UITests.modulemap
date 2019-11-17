@@ -1,0 +1,6 @@
+framework module Pods_MyB11_MyB11UITests {
+  umbrella header "Pods-MyB11-MyB11UITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
