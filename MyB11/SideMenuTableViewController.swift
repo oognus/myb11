@@ -15,7 +15,11 @@ class SideMenuTableViewController: UITableViewController {
     
     //
     var arr = ["a", "b"]
-    var teamList: Results<Team>?
+    var teamList: Results<Team>!
+    
+    //
+    let realm = try! Realm()
+    
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = true
@@ -25,7 +29,7 @@ class SideMenuTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let realm = try! Realm()
+        
         teamList = realm.objects(Team.self)
         
 
@@ -44,6 +48,10 @@ class SideMenuTableViewController: UITableViewController {
     @objc func checkAction(sender : UITapGestureRecognizer) {
         
         showTeamAlert()
+        
+        print("reload")
+        teamList = realm.objects(Team.self)
+        self.tableView.reloadData()
         
         
         
