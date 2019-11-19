@@ -1,16 +1,26 @@
 PODS:
+  - Realm (4.1.0):
+    - Realm/Headers (= 4.1.0)
+  - Realm/Headers (4.1.0)
+  - RealmSwift (4.1.0):
+    - Realm (= 4.1.0)
   - SideMenu (6.4.6)
 
 DEPENDENCIES:
+  - RealmSwift
   - SideMenu
 
 SPEC REPOS:
   trunk:
+    - Realm
+    - RealmSwift
     - SideMenu
 
 SPEC CHECKSUMS:
+  Realm: 5d1453468eca02c901c50b8a356f4a98a15b57aa
+  RealmSwift: 1d238caa5c64a590c669beef1a7e858a6cf55a1c
   SideMenu: 43910eb6dc994dd59771f8e82573d04a9e776361
 
-PODFILE CHECKSUM: ec9486f6b791436e7bbc6ced963c1a9523199124
+PODFILE CHECKSUM: b9693d7bccc988b8976b9539c7182b8d33b48cae
 
 COCOAPODS: 1.8.4

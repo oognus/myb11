@@ -6,6 +6,7 @@ target 'MyB11' do
   use_frameworks!
 
   pod 'SideMenu'
+  pod 'RealmSwift'
 
   # Pods for MyB11
 
