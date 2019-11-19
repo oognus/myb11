@@ -161,7 +161,7 @@ class SideMenuTableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 
-        cell.textLabel?.text = teamList[indexPath.row].name
+        cell.textLabel?.text = teamList[indexPath.row].id
 
         return cell
 

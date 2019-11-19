@@ -21,18 +21,33 @@ class ViewController: UIViewController {
         //
         let realm = try! Realm()
         
+        
         //
-        let team = Team()
-        team.name = "Han"
-        print("name of TEAM: \(team.name)")
+        let team = realm.objects(Team.self).filter("name == 'aa'").first!
+        print(team.players)
+        
         
 //        try! realm.write {
 //            realm.add(team)
 //        }
         
         
-        let teams = realm.objects(Team.self)
-        print(teams)
+        
+//        let player = Player()
+//        player.name = "p2"
+//        player.team = team
+
+//        try! realm.write {
+//            realm.add(player)
+//        }
+        
+        let players = realm.objects(Player.self)
+        print(players)
+        
+        
+        
+//        let teams = realm.objects(Team.self)
+//        print(teams)
     }
 
     @IBAction func didTabMenu(_ sender: UIButton) {
