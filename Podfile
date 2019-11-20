@@ -7,6 +7,8 @@ target 'MyB11' do
 
   pod 'SideMenu'
   pod 'RealmSwift'
+  pod 'FloatingPanel'
+  pod 'SnapKit', '~> 5.0.0'
 
   # Pods for MyB11
 

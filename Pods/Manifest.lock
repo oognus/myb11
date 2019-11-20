@@ -1,26 +1,34 @@
 PODS:
+  - FloatingPanel (1.7.0)
   - Realm (4.1.0):
     - Realm/Headers (= 4.1.0)
   - Realm/Headers (4.1.0)
   - RealmSwift (4.1.0):
     - Realm (= 4.1.0)
   - SideMenu (6.4.6)
+  - SnapKit (5.0.1)
 
 DEPENDENCIES:
+  - FloatingPanel
   - RealmSwift
   - SideMenu
+  - SnapKit (~> 5.0.0)
 
 SPEC REPOS:
   trunk:
+    - FloatingPanel
     - Realm
     - RealmSwift
     - SideMenu
+    - SnapKit
 
 SPEC CHECKSUMS:
+  FloatingPanel: f686602da8eff56375e577f19be37348a95f4e24
   Realm: 5d1453468eca02c901c50b8a356f4a98a15b57aa
   RealmSwift: 1d238caa5c64a590c669beef1a7e858a6cf55a1c
   SideMenu: 43910eb6dc994dd59771f8e82573d04a9e776361
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
-PODFILE CHECKSUM: b9693d7bccc988b8976b9539c7182b8d33b48cae
+PODFILE CHECKSUM: 32066554067b3a4b90a9ee87d38372729d37d478
 
 COCOAPODS: 1.8.4

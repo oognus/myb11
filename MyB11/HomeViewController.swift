@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  HomeViewController.swift
 //  MyB11
 //
 //  Created by oognus on 2019/11/15.
@@ -9,47 +9,83 @@
 import UIKit
 import SideMenu
 import RealmSwift
+import FloatingPanel
+import SnapKit
 
-class ViewController: UIViewController {
+class HomeViewController: UIViewController, FloatingPanelControllerDelegate {
     
     
+    var fpc: FloatingPanelController!
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        // Remove the views managed by the `FloatingPanelController` object from self.view.
+//        fpc.removePanelFromParent()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+            
+        // 팀셋팅, 경기장셋팅, 선수셋팅
         
-        //
-        let realm = try! Realm()
-        
-        
-        //
-        let team = realm.objects(Team.self).filter("name == 'aa'").first!
-        print(team.players)
+        initViews()
         
         
-//        try! realm.write {
-//            realm.add(team)
-//        }
+        fpc = FloatingPanelController()
         
-        
-        
-//        let player = Player()
-//        player.name = "p2"
-//        player.team = team
 
-//        try! realm.write {
-//            realm.add(player)
-//        }
-        
-        let players = realm.objects(Player.self)
-        print(players)
-        
-        
-        
-//        let teams = realm.objects(Team.self)
-//        print(teams)
+        // Assign self as the delegate of the controller.
+        fpc.delegate = self // Optional
+
+        // Set a content view controller.
+        let contentVC = PanelViewController()
+        fpc.set(contentViewController: contentVC)
+
+        // Track a scroll view(or the siblings) in the content view controller.
+//        fpc.track(scrollView: contentVC.tableView)
+
+        // Add and show the views managed by the `FloatingPanelController` object to self.view.
+        fpc.addPanel(toParent: self)
     }
-
+    
+    func initViews() {
+        //
+        let superView = self.view!
+        let sideMenuButton = UIButton()
+        let groundView = UIView()
+        
+        //
+        superView.addSubview(groundView)
+        superView.addSubview(sideMenuButton)
+        
+        //snp
+        groundView.snp.makeConstraints { (make) -> Void in
+            make.top.left.right.equalTo(superView)
+            make.height.equalTo(superView.snp.width)
+        }
+        
+        sideMenuButton.snp.makeConstraints { (make) in
+            make.top.left.equalTo(superView).offset(20)
+        }
+        
+        //config
+        groundView.backgroundColor = .red
+        sideMenuButton.setTitle("MN", for: .normal)
+        
+        
+        
+        
+        
+        
+    }
+    
+    func updateGround() {
+        
+    }
+    
+    //
     @IBAction func didTabMenu(_ sender: UIButton) {
         print("asdf")
         
