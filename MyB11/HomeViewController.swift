@@ -12,7 +12,7 @@ import RealmSwift
 import FloatingPanel
 import SnapKit
 
-class HomeViewController: UIViewController, FloatingPanelControllerDelegate {
+class HomeViewController: UIViewController, FloatingPanelControllerDelegate, UIGestureRecognizerDelegate {
     
     
     var fpc: FloatingPanelController!
@@ -50,24 +50,72 @@ class HomeViewController: UIViewController, FloatingPanelControllerDelegate {
         fpc.addPanel(toParent: self)
     }
     
+    let playersView = UIView()
     func initViews() {
+        
         //
         let superView = self.view!
         let sideMenuButton = UIButton()
         let groundView = UIView()
+        let groundImageView = UIImageView()
+        let teamNameView = UIView()
+        let teamNameLabel = UILabel()
+        let teamMemoLabel = UILabel()
         
         //
         superView.addSubview(groundView)
-        superView.addSubview(sideMenuButton)
+        
+        groundView.addSubview(groundImageView)
+        groundView.addSubview(teamNameView)
+        groundView.addSubview(sideMenuButton)
+        groundView.addSubview(playersView)
+        
+        teamNameView.addSubview(teamNameLabel)
+        teamNameView.addSubview(teamMemoLabel)
+        
+        //
+        groundImageView.image = UIImage(named: "dong_test.png")
+        sideMenuButton.backgroundColor = .black
+        teamNameView.backgroundColor = .yellow
+        teamNameLabel.textAlignment = .center
+        teamNameLabel.text = "Manchester Utd."
+        teamMemoLabel.textAlignment = .center
+        teamMemoLabel.text = "v Liverpool"
+        
         
         //snp
         groundView.snp.makeConstraints { (make) -> Void in
-            make.top.left.right.equalTo(superView)
+            make.top.equalTo(superView).offset(30)
+            make.left.right.equalTo(superView)
             make.height.equalTo(superView.snp.width)
         }
         
+        groundImageView.snp.makeConstraints { (make) in
+            make.top.equalTo(superView)
+            make.left.right.bottom.equalTo(groundView)
+        }
+        
         sideMenuButton.snp.makeConstraints { (make) in
-            make.top.left.equalTo(superView).offset(20)
+            make.top.left.equalTo(groundView).offset(20)
+        }
+        
+        playersView.snp.makeConstraints { (make) in
+            make.top.left.right.bottom.equalTo(groundView)
+        }
+        
+        teamNameView.snp.makeConstraints { (make) in
+            make.top.left.right.equalTo(groundView)
+            make.height.equalTo(100)
+        }
+        
+        teamNameLabel.snp.makeConstraints { (make) in
+            make.left.right.equalTo(teamNameView)
+            make.bottom.equalTo(teamNameView.snp.centerY)
+        }
+        
+        teamMemoLabel.snp.makeConstraints { (make) in
+            make.left.right.equalTo(teamNameView)
+            make.top.equalTo(teamNameView.snp.centerY)
         }
         
         //config
@@ -78,11 +126,70 @@ class HomeViewController: UIViewController, FloatingPanelControllerDelegate {
         
         
         
-        
+        updateGround()
     }
     
     func updateGround() {
+        //team name, memo, stadium 셋팅
         
+        //
+        for v in playersView.subviews {
+            v.removeFromSuperview()
+        }
+        
+        for _ in 0...10 {
+            let playerView = UIView()
+            playersView.addSubview(playerView)
+            
+            playerView.snp.makeConstraints { (make) in
+                make.width.height.equalTo(30)
+                make.left.equalTo(playersView).offset(200)
+                make.top.equalTo(playersView).offset(200)
+            }
+            
+            playerView.backgroundColor = .brown
+            
+            var doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(buttonTapGesture(_:)))
+            doubleTapGesture.numberOfTapsRequired = 2
+            playerView.addGestureRecognizer(doubleTapGesture)
+            
+            let panGestureRecongnizer = UIPanGestureRecognizer(target: self, action: #selector(panAction(_ :)))
+            panGestureRecongnizer.delegate = self
+            playerView.addGestureRecognizer(panGestureRecongnizer)
+
+
+
+        }
+        
+        
+        
+    }
+    
+    @objc func panAction (_ sender : UIPanGestureRecognizer){
+
+            let transition = panGestureRecognizer.translation(in: playersView)
+
+                   let changedX = playersView.center.x + transition.x
+
+                   let changedY = imageView.center.y + transition.y
+
+                   imageView.center = CGPoint(x: changedX, y: changedY)
+
+
+
+                   panGestureRecognizer.setTranslation(CGPoint.zero, in: playersView)
+
+
+
+            
+
+        }
+
+
+
+    
+    @objc func buttonTapGesture(_ gesture: UITapGestureRecognizer){
+        print("UIGestureRecognizer : UITapGestureRecognizer")
     }
     
     //
