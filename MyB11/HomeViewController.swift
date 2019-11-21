@@ -129,6 +129,7 @@ class HomeViewController: UIViewController, FloatingPanelControllerDelegate, UIG
         updateGround()
     }
     
+
     func updateGround() {
         //team name, memo, stadium 셋팅
         
@@ -138,26 +139,17 @@ class HomeViewController: UIViewController, FloatingPanelControllerDelegate, UIG
         }
         
         for _ in 0...10 {
-            let playerView = UIView()
+            let playerView = UIView(frame: CGRect(x: 100, y: 100, width: 100, height: 100))
             playersView.addSubview(playerView)
-            
-            playerView.snp.makeConstraints { (make) in
-                make.width.height.equalTo(30)
-                make.left.equalTo(playersView).offset(200)
-                make.top.equalTo(playersView).offset(200)
-            }
             
             playerView.backgroundColor = .brown
             
-            var doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(buttonTapGesture(_:)))
-            doubleTapGesture.numberOfTapsRequired = 2
-            playerView.addGestureRecognizer(doubleTapGesture)
             
-            let panGestureRecongnizer = UIPanGestureRecognizer(target: self, action: #selector(panAction(_ :)))
-            panGestureRecongnizer.delegate = self
-            playerView.addGestureRecognizer(panGestureRecongnizer)
-
-
+            
+            
+            let gesture = UIPanGestureRecognizer(target: self, action: #selector(wasDragged(_:)))
+            playerView.addGestureRecognizer(gesture)
+            gesture.delegate = self
 
         }
         
@@ -165,28 +157,25 @@ class HomeViewController: UIViewController, FloatingPanelControllerDelegate, UIG
         
     }
     
-    @objc func panAction (_ sender : UIPanGestureRecognizer){
+    @objc func wasDragged(_ gestureRecognizer: UIPanGestureRecognizer) {
 
-            let transition = panGestureRecognizer.translation(in: playersView)
+        if gestureRecognizer.state == UIGestureRecognizer.State.began || gestureRecognizer.state == UIGestureRecognizer.State.changed {
 
-                   let changedX = playersView.center.x + transition.x
-
-                   let changedY = imageView.center.y + transition.y
-
-                   imageView.center = CGPoint(x: changedX, y: changedY)
-
-
-
-                   panGestureRecognizer.setTranslation(CGPoint.zero, in: playersView)
-
-
+            let translation = gestureRecognizer.translation(in: playersView)
+        
 
             
-
+            gestureRecognizer.view!.center = CGPoint(x: gestureRecognizer.view!.center.x+translation.x, y: gestureRecognizer.view!.center.y + translation.y)
+            gestureRecognizer.setTranslation(CGPoint(x: 0, y: 0), in: playersView)
         }
-
-
-
+    }
+    
+    
+    
+    
+    
+    
+    
     
     @objc func buttonTapGesture(_ gesture: UITapGestureRecognizer){
         print("UIGestureRecognizer : UITapGestureRecognizer")
