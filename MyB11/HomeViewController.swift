@@ -162,10 +162,21 @@ class HomeViewController: UIViewController, FloatingPanelControllerDelegate, UIG
         if gestureRecognizer.state == UIGestureRecognizer.State.began || gestureRecognizer.state == UIGestureRecognizer.State.changed {
 
             let translation = gestureRecognizer.translation(in: playersView)
-        
-
+                    
+            let view_x = Int(gestureRecognizer.view!.center.x+translation.x)
+            let view_y = Int(gestureRecognizer.view!.center.y + translation.y)
             
-            gestureRecognizer.view!.center = CGPoint(x: gestureRecognizer.view!.center.x+translation.x, y: gestureRecognizer.view!.center.y + translation.y)
+            let and_x = view_x % 10
+            let and_y = view_y % 10
+            
+            if (and_x > 5) {
+                
+            }
+            
+            gestureRecognizer.view!.center = CGPoint(
+                x: view_x,
+                y: view_y)
+            
             gestureRecognizer.setTranslation(CGPoint(x: 0, y: 0), in: playersView)
         }
     }
