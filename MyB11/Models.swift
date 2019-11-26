@@ -22,10 +22,12 @@ class Team: Object {
     @objc dynamic var id = UUID().uuidString
     @objc dynamic var name = ""
     @objc dynamic var memo = ""
+    @objc dynamic var is_current = false
 
     //
     @objc dynamic var stadium: Stadium?
     @objc dynamic var jersey: Jersey?
+    var players = List<Player>()
 }
 
 class Player: Object {
@@ -37,6 +39,8 @@ class Player: Object {
     @objc dynamic var id = UUID().uuidString
     @objc dynamic var name = ""
     @objc dynamic var memo = ""
+    @objc dynamic var x: CGFloat = 0
+    @objc dynamic var y: CGFloat = 0
     
     //
     @objc dynamic var team: Team?

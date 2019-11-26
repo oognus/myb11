@@ -14,7 +14,8 @@ import SnapKit
 
 class HomeViewController: UIViewController, FloatingPanelControllerDelegate, UIGestureRecognizerDelegate {
     
-    
+
+    let realm = try! Realm()
     var fpc: FloatingPanelController!
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -27,6 +28,31 @@ class HomeViewController: UIViewController, FloatingPanelControllerDelegate, UIG
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        let current_team = realm.objects(Team.self).filter("is_current == true")
+        print(current_team)
+        if (current_team.first == nil) {
+            let team = Team()
+            team.name = "default"
+            team.memo = "default"
+            team.is_current = true
+            
+            let players = List<Player>()
+            
+            for i in 0...10 {
+                let player = Player()
+                player.x = CGFloat(100+i)
+                player.y = CGFloat(100+i)
+                players.append(player)
+            }
+            
+            team.players = players
+            
+            try! realm.write {
+                realm.add(team)
+            }
+        }
+        
             
         // 팀셋팅, 경기장셋팅, 선수셋팅
         
@@ -72,16 +98,7 @@ class HomeViewController: UIViewController, FloatingPanelControllerDelegate, UIG
         
         teamNameView.addSubview(teamNameLabel)
         teamNameView.addSubview(teamMemoLabel)
-        
-        //
-        groundImageView.image = UIImage(named: "dong_test.png")
-        sideMenuButton.backgroundColor = .black
-        teamNameView.backgroundColor = .yellow
-        teamNameLabel.textAlignment = .center
-        teamNameLabel.text = "Manchester Utd."
-        teamMemoLabel.textAlignment = .center
-        teamMemoLabel.text = "v Liverpool"
-        
+
         
         //snp
         groundView.snp.makeConstraints { (make) -> Void in
@@ -121,16 +138,35 @@ class HomeViewController: UIViewController, FloatingPanelControllerDelegate, UIG
         //config
         groundView.backgroundColor = .red
         sideMenuButton.setTitle("MN", for: .normal)
-        
-        
-        
-        
+        groundImageView.image = UIImage(named: "dong_test.png")
+        sideMenuButton.backgroundColor = .black
+        teamNameView.backgroundColor = .yellow
+        teamNameLabel.textAlignment = .center
+        teamNameLabel.text = "Manchester Utd."
+        teamMemoLabel.textAlignment = .center
+        teamMemoLabel.text = "v Liverpool"
         
         updateGround()
     }
-    
 
+    var players = List<Player>()
     func updateGround() {
+        
+        let screenSize: CGRect = UIScreen.main.bounds
+        
+        let playerWidth = screenSize.width * 0.1
+        let playerHeight = screenSize.width * 0.1
+        
+        let center = screenSize.width * 0.5
+        
+        
+        //
+        let current_team = realm.objects(Team.self).filter("is_current == true").first!
+        
+        players = current_team.players
+    
+        
+        // 팀 가져와서 셋팅
         //team name, memo, stadium 셋팅
         
         //
@@ -138,14 +174,16 @@ class HomeViewController: UIViewController, FloatingPanelControllerDelegate, UIG
             v.removeFromSuperview()
         }
         
-        for _ in 0...10 {
-            let playerView = UIView(frame: CGRect(x: 100, y: 100, width: 100, height: 100))
+        for (index, player) in players.enumerated() {
+            let player_x = player.x
+            let player_y = player.y
+            let playerView = UIView(frame: CGRect(x: 0, y: 0, width: playerWidth, height: playerHeight))
             playersView.addSubview(playerView)
             
-            playerView.backgroundColor = .brown
-            
-            
-            
+            playerView.backgroundColor = .black
+            playerView.center.x = player_x
+            playerView.center.y = player_y
+            playerView.tag = index
             
             let gesture = UIPanGestureRecognizer(target: self, action: #selector(wasDragged(_:)))
             playerView.addGestureRecognizer(gesture)
@@ -163,8 +201,14 @@ class HomeViewController: UIViewController, FloatingPanelControllerDelegate, UIG
 
             let translation = gestureRecognizer.translation(in: playersView)
                     
-            let view_x = Int(gestureRecognizer.view!.center.x+translation.x)
-            let view_y = Int(gestureRecognizer.view!.center.y + translation.y)
+            let view_x = gestureRecognizer.view!.center.x+translation.x
+            let view_y = gestureRecognizer.view!.center.y + translation.y
+            
+            let tag = gestureRecognizer.view?.tag
+            try! realm.write {
+                players[tag!].x = view_x
+                players[tag!].y = view_y
+            }
             
             
             gestureRecognizer.view!.center = CGPoint(
@@ -216,22 +260,43 @@ extension UIViewController {
             let realm = try! Realm()
             
             //
+            let current_team = realm.objects(Team.self).filter("is_current==true").first
+            
+            if (current_team != nil) {
+                    try! realm.write {
+                        current_team!.is_current = false
+                    }
+            }
+            
+            //
+            
+            
             let team = Team()
             team.name = teamName
             team.memo = teamMemo
+            team.is_current = true
+            
+            let players = List<Player>()
+            
+            for i in 0...10 {
+                let player = Player()
+                player.x = CGFloat(100+i)
+                player.y = CGFloat(100+i)
+                players.append(player)
+            }
+            
+            team.players = players
             
             try! realm.write {
                 realm.add(team)
             }
+            
             
         }))
         
         self.present(alert, animated: true, completion: nil)
     }
     
-    func popupAlert() {
-        print("pupup")
-    }
 //    func popupAlert(title: String?, message: String?, actionTitles:[String?], actions:[((UIAlertAction) -> Void)?]) {
 //        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 //        for (index, title) in actionTitles.enumerated() {

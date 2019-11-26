@@ -48,8 +48,6 @@ class SideMenuTableViewController: UITableViewController {
     @objc func checkAction(sender : UITapGestureRecognizer) {
         
         showTeamAlert()
-        
-        print("reload")
         teamList = realm.objects(Team.self)
         self.tableView.reloadData()
         
@@ -161,11 +159,35 @@ class SideMenuTableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 
-        cell.textLabel?.text = teamList[indexPath.row].id
+        cell.textLabel?.text = teamList[indexPath.row].name
 
         return cell
 
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let current_team = realm.objects(Team.self).filter("is_current==true").first
+        if (current_team != nil) {
+                try! realm.write {
+                    current_team!.is_current = false
+                }
+        }
+        
+        
+        let team = teamList[indexPath.row]
+        try! realm.write {
+            team.is_current = true
+        }
+        
+        dismiss(animated: true, completion: nil)
+        
+        if let mainVC = self.presentingViewController as? HomeViewController {
+            mainVC.updateGround()
+        }
+    }
+    
+    
 
 
     /*
