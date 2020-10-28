@@ -39,8 +39,8 @@ class Player: Object {
     @objc dynamic var id = UUID().uuidString
     @objc dynamic var name = ""
     @objc dynamic var memo = ""
-    @objc dynamic var x: CGFloat = 0
-    @objc dynamic var y: CGFloat = 0
+    @objc dynamic var x: Float = 0
+    @objc dynamic var y: Float = 0
     
     //
     @objc dynamic var team: Team?
@@ -73,7 +73,6 @@ class Jersey: Object {
     @objc dynamic var image_nm = ""
     
     //
-    
 }
 
 class Condition: Object {

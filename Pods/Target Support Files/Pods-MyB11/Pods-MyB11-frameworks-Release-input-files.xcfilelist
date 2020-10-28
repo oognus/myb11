@@ -1,5 +1,7 @@
 ${PODS_ROOT}/Target Support Files/Pods-MyB11/Pods-MyB11-frameworks.sh
+${BUILT_PRODUCTS_DIR}/CircleMenu/CircleMenu.framework
 ${BUILT_PRODUCTS_DIR}/FloatingPanel/FloatingPanel.framework
+${BUILT_PRODUCTS_DIR}/MenuItemKit/MenuItemKit.framework
 ${BUILT_PRODUCTS_DIR}/Realm/Realm.framework
 ${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework
 ${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework

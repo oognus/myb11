@@ -48,6 +48,10 @@ class SideMenuTableViewController: UITableViewController {
     @objc func checkAction(sender : UITapGestureRecognizer) {
         
         showTeamAlert()
+        
+//        dismiss(animated: true, completion: nil)
+        
+        
         teamList = realm.objects(Team.self)
         self.tableView.reloadData()
         
@@ -174,14 +178,13 @@ class SideMenuTableViewController: UITableViewController {
                 }
         }
         
-        
         let team = teamList[indexPath.row]
         try! realm.write {
             team.is_current = true
         }
         
         dismiss(animated: true, completion: nil)
-        
+    
         if let mainVC = self.presentingViewController as? HomeViewController {
             mainVC.updateGround()
         }
@@ -205,7 +208,8 @@ class SideMenuTableViewController: UITableViewController {
             // Delete the row from the data source
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+      
+     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
     */
